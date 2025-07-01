@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Charity Water Game</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Lato -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Milestone banner (hidden at start) -->
@@ -27,6 +29,16 @@
         <div id="timer-display">Time: <span id="timer">60</span>s</div>
     </div>
 
+    <!-- Difficulty selector -->
+    <div style="text-align:center; margin-bottom:16px;">
+        <label for="difficulty-select" style="font-weight:bold; color:#2E9DF7;">Difficulty:</label>
+        <select id="difficulty-select" style="font-size:1.1rem; padding:6px 18px; border-radius:20px; border:1px solid #2E9DF7; margin-left:8px;">
+            <option value="easy">Easy</option>
+            <option value="normal" selected>Normal</option>
+            <option value="hard">Hard</option>
+        </select>
+    </div>
+
     <!-- Start button -->
     <div style="text-align:center; margin-bottom:20px;">
         <button id="start-btn">Start</button>
@@ -46,6 +58,19 @@
         </div>
     </div>
 
+    <!-- Sound effects -->
+    <audio id="sound-clean" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4bfa.mp3" preload="auto"></audio>
+    <audio id="sound-bad" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b4bfa.mp3" preload="auto"></audio>
+
     <script src="script.js"></script>
+
+    <!-- Footer with links -->
+    <footer id="cw-footer">
+        <div>
+            <a href="https://www.charitywater.org" target="_blank">Charity: water</a>
+            &nbsp;|&nbsp;
+            <a href="https://www.charitywater.org/donate" target="_blank">Donate</a>
+        </div>
+    </footer>
 </body>
 </html>

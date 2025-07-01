@@ -9,11 +9,32 @@ let timerInterval; // To store the timer interval
 let dropInterval; // To store the drop creation interval
 let lastMilestoneScore = 0; // To track milestones
 
+// Difficulty settings
+const DIFFICULTY_SETTINGS = {
+  easy:   { timer: 60, dropInterval: 1200 },
+  normal: { timer: 45, dropInterval: 900 },
+  hard:   { timer: 30, dropInterval: 600 }
+};
+
+// Milestone scores and messages
+const MILESTONES = [
+  { score: 10, message: "Great start!" },
+  { score: 25, message: "You're doing great!" },
+  { score: 50, message: "Halfway there!" },
+  { score: 100, message: "Amazing progress!" },
+  { score: 200, message: "Incredible! Keep going!" }
+];
+
 // Get DOM elements
 const scoreSpan = document.getElementById('score');
 const timerSpan = document.getElementById('timer');
 const startBtn = document.getElementById('start-btn');
 const gameArea = document.getElementById('game-area');
+const difficultySelect = document.getElementById('difficulty-select'); // new
+
+// Sound effects
+const soundClean = document.getElementById('sound-clean');
+const soundBad = document.getElementById('sound-bad');
 
 // Function to create a new water drop and make it fall
 // Drops can be clean (blue) or polluted (gray)
@@ -47,14 +68,24 @@ function createDrop() {
     if (!gameRunning) return;
     
     // Remove the drop from the game area
-    gameArea.removeChild(drop);
+    drop.remove();
     
     if (isClean) {
       // Clean drop: add 10 points
       score += 10;
+      // Play clean sound
+      if (soundClean) {
+        soundClean.currentTime = 0;
+        soundClean.play();
+      }
     } else {
       // Polluted drop: subtract 5 points and show "Oops!" message
       score -= 5;
+      // Play bad sound
+      if (soundBad) {
+        soundBad.currentTime = 0;
+        soundBad.play();
+      }
       showOopsMessage(event.clientX, event.clientY);
     }
     
@@ -116,6 +147,28 @@ function showOopsMessage(x, y) {
   }, 1000);
 }
 
+// Add milestone message element to DOM if not present
+let milestoneMsgElem = document.getElementById('milestone-message');
+if (!milestoneMsgElem) {
+  milestoneMsgElem = document.createElement('div');
+  milestoneMsgElem.id = 'milestone-message';
+  milestoneMsgElem.style.position = 'fixed';
+  milestoneMsgElem.style.top = '60px';
+  milestoneMsgElem.style.left = '50%';
+  milestoneMsgElem.style.transform = 'translateX(-50%)';
+  milestoneMsgElem.style.background = '#FFC907';
+  milestoneMsgElem.style.color = '#2E9DF7';
+  milestoneMsgElem.style.fontWeight = 'bold';
+  milestoneMsgElem.style.fontSize = '1.3rem';
+  milestoneMsgElem.style.padding = '14px 32px';
+  milestoneMsgElem.style.borderRadius = '24px';
+  milestoneMsgElem.style.boxShadow = '0 2px 12px rgba(46,157,247,0.10)';
+  milestoneMsgElem.style.opacity = '0';
+  milestoneMsgElem.style.transition = 'opacity 0.5s';
+  milestoneMsgElem.style.zIndex = '200';
+  document.body.appendChild(milestoneMsgElem);
+}
+
 // Function to show the milestone banner at the top
 function showMilestoneBanner() {
   const banner = document.getElementById('milestone-banner');
@@ -126,11 +179,28 @@ function showMilestoneBanner() {
   }, 3000);
 }
 
-// Function to check if a new milestone (every 50 points) is reached
+// Function to show milestone message with fade-in/out
+function showMilestoneMessage(text) {
+  milestoneMsgElem.textContent = text;
+  milestoneMsgElem.style.opacity = '1';
+  setTimeout(() => {
+    milestoneMsgElem.style.opacity = '0';
+  }, 2000);
+}
+
+// Function to check if a new milestone is reached
 function checkMilestone() {
+  // Show banner for every +50 points (legacy)
   if (score >= lastMilestoneScore + 50) {
     lastMilestoneScore = Math.floor(score / 50) * 50;
     showMilestoneBanner();
+  }
+  // Show custom message for defined milestones
+  for (const milestone of MILESTONES) {
+    if (score === milestone.score) {
+      showMilestoneMessage(milestone.message);
+      break;
+    }
   }
 }
 
@@ -162,16 +232,21 @@ function createConfetti() {
 
 // Function to start the game when Start button is clicked
 function startGame() {
+  // Get selected difficulty
+  const difficulty = difficultySelect.value;
+  const settings = DIFFICULTY_SETTINGS[difficulty];
+
   // Reset game state
   score = 0;
-  timer = 60;
+  timer = settings.timer;
   gameRunning = true;
   lastMilestoneScore = 0;
   // Update displays
   scoreSpan.textContent = score;
   timerSpan.textContent = timer;
-  // Hide Start button
+  // Hide Start button and difficulty selector
   startBtn.style.display = 'none';
+  difficultySelect.disabled = true;
   // Clear drops
   gameArea.innerHTML = '';
   // Start the countdown timer
@@ -183,8 +258,8 @@ function startGame() {
       endGame();
     }
   }, 1000);
-  // Start creating drops every second
-  dropInterval = setInterval(createDrop, 1000);
+  // Start creating drops at the selected interval
+  dropInterval = setInterval(createDrop, settings.dropInterval);
 }
 
 // Function to end the game and show Game Over screen
@@ -205,21 +280,22 @@ function endGame() {
     createConfetti();
   }
   // Add event listener to Play Again button
-  playAgainBtn.addEventListener('click', () => {
+  playAgainBtn.onclick = () => {
     // Hide Game Over screen
     gameOverScreen.style.display = 'none';
     // Reset game state
     score = 0;
-    timer = 60;
+    timer = DIFFICULTY_SETTINGS[difficultySelect.value].timer;
     lastMilestoneScore = 0;
     // Update displays
     scoreSpan.textContent = score;
     timerSpan.textContent = timer;
-    // Show Start button
+    // Show Start button and enable difficulty selector
     startBtn.style.display = 'inline-block';
+    difficultySelect.disabled = false;
     // Clear drops
     gameArea.innerHTML = '';
-  });
+  };
 }
 
 // Add event listener to Start button to begin the game

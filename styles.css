@@ -17,7 +17,7 @@ Secondary Colors:
 body {
   background: #FFC907;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Lato', Arial, sans-serif;
   min-height: 100vh;
 }
 
@@ -214,10 +214,48 @@ body {
   color: #222;
   margin-bottom: 8px;
   letter-spacing: 2px;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: 'Lato', 'Georgia', 'Times New Roman', serif;
   font-variant: small-caps;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+#difficulty-select {
+  font-size: 1.1rem;
+  padding: 6px 18px;
+  border-radius: 20px;
+  border: 1px solid #2E9DF7;
+  margin-left: 8px;
+  background: #fff;
+  color: #2E9DF7;
+  outline: none;
+  transition: border 0.2s;
+}
+#difficulty-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#cw-footer {
+  width: 100vw;
+  background: #2E9DF7;
+  color: #fff;
+  text-align: center;
+  font-size: 0.95rem;
+  padding: 14px 0 10px 0;
+  margin-top: 24px;
+  letter-spacing: 1px;
+}
+#cw-footer a {
+  color: #FFC907;
+  text-decoration: underline;
+  margin: 0 8px;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+#cw-footer a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 @media (min-width: 600px) {
