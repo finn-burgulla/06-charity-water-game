@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charity Water Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Milestone banner (hidden at start) -->
+    <div id="milestone-banner">Milestone Unlocked!</div>
+    
+    <!-- Confetti container -->
+    <div id="confetti-container"></div>
+    
+    <!-- Charity: water logo -->
+    <img src="img/logo-black.png" alt="Charity: water logo" id="cw-logo" style="width:120px; display:block; margin: 20px auto;">
+    <!-- Charity: water text below logo -->
+    <div class="cw-text">CHARITY: WATER</div>
+
+    <!-- Game title -->
+    <h1 id="game-title" style="text-align:center;">Water Drop Rescue</h1>
+
+    <!-- Score and Timer display -->
+    <div id="score-timer-container" style="display:flex; justify-content:center; gap:40px; margin-bottom:20px;">
+        <div id="score-display">Score: <span id="score">0</span></div>
+        <div id="timer-display">Time: <span id="timer">60</span>s</div>
+    </div>
+
+    <!-- Start button -->
+    <div style="text-align:center; margin-bottom:20px;">
+        <button id="start-btn">Start</button>
+    </div>
+
+    <!-- Game area where drops will fall -->
+    <div id="game-area" style="width:350px; height:400px; margin:0 auto; background:#e6f7ff; border:2px solid #2E9DF7; position:relative; overflow:hidden;"></div>
+
+    <!-- Game Over screen (hidden at start) -->
+    <div id="game-over" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); color:#fff; justify-content:center; align-items:center; flex-direction:column; z-index:10;">
+        <div style="background:#2E9DF7; padding:30px 40px; border-radius:12px; text-align:center;">
+            <h2>Game Over!</h2>
+            <p>Your final score: <span id="final-score">0</span></p>
+            <button id="play-again-btn">Play Again</button>
+            <br><br>
+            <a href="https://charitywater.org" target="_blank" style="color:#FFC907; text-decoration:underline;">Visit charitywater.org</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
